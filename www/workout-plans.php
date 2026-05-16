@@ -1,0 +1,10 @@
+<?php
+require_once __DIR__ . '/models/WorkoutPlanModel.php'; require_once __DIR__ . '/models/PlanGoalModel.php'; require_once __DIR__ . '/models/PlanLevelModel.php';
+$model = new WorkoutPlanModel(); $goals = (new PlanGoalModel())->getAll(); $levels = (new PlanLevelModel())->getAll();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) { $model->delete((int) $_POST['delete_id']); header('Location: /workout-plans.php'); exit; }
+$filters = ['q'=>trim($_GET['q'] ?? ''), 'goal_id'=>(int)($_GET['goal_id'] ?? 0), 'level_id'=>(int)($_GET['level_id'] ?? 0)];
+$plans = $model->search($filters);
+?><!doctype html><html><body><?php include __DIR__ . '/includes/nav.php'; ?><h1>Workout plans</h1>
+<form method="get"><input name="q" value="<?= htmlspecialchars($filters['q']); ?>" placeholder="Search title or note"><select name="goal_id"><option value="">All goals</option><?php foreach($goals as $g): ?><option value="<?= $g['id']; ?>" <?= $filters['goal_id']==$g['id']?'selected':''; ?>><?= htmlspecialchars($g['name']); ?></option><?php endforeach; ?></select><select name="level_id"><option value="">All levels</option><?php foreach($levels as $l): ?><option value="<?= $l['id']; ?>" <?= $filters['level_id']==$l['id']?'selected':''; ?>><?= htmlspecialchars($l['name']); ?></option><?php endforeach; ?></select><button>Filter</button></form>
+<table border="1"><tr><th>Title</th><th>Goal</th><th>Level</th><th>Actions</th></tr><?php foreach($plans as $p): ?><tr><td><?= htmlspecialchars($p['title']); ?></td><td><?= htmlspecialchars($p['goal_name'] ?? ''); ?></td><td><?= htmlspecialchars($p['level_name'] ?? ''); ?></td><td><a href="/workout-plan-detail.php?id=<?= $p['id']; ?>">Detail</a> <a href="/workout-plan-upravit.php?id=<?= $p['id']; ?>">Upraviť</a> <form method="post" style="display:inline" onsubmit="return confirm('Delete plan?');"><input type="hidden" name="delete_id" value="<?= $p['id']; ?>"><button type="submit">Zmazať</button></form></td></tr><?php endforeach; ?></table>
+</body></html>
