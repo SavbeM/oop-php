@@ -94,23 +94,38 @@ class WorkoutPlanModel implements ModelInterface
         return $stmt->fetchAll();
     }
 
-    public function attachExercise(int $planId, int $exerciseId): bool
+    public function attach(int $planId, int $exerciseId): bool
     {
         return $this->db->prepare('INSERT IGNORE INTO workout_plan_exercises (workout_plan_id, exercise_id) VALUES (:plan_id,:exercise_id)')
             ->execute(['plan_id' => $planId, 'exercise_id' => $exerciseId]);
     }
 
-    public function detachExercise(int $planId, int $exerciseId): bool
+    public function detach(int $planId, int $exerciseId): bool
     {
         return $this->db->prepare('DELETE FROM workout_plan_exercises WHERE workout_plan_id=:plan_id AND exercise_id=:exercise_id')
             ->execute(['plan_id' => $planId, 'exercise_id' => $exerciseId]);
     }
 
-    public function syncExercises(int $planId, array $exerciseIds): void
+    public function sync(int $planId, array $exerciseIds): void
     {
         $this->db->prepare('DELETE FROM workout_plan_exercises WHERE workout_plan_id = :id')->execute(['id' => $planId]);
         foreach ($exerciseIds as $exerciseId) {
-            $this->attachExercise($planId, (int) $exerciseId);
+            $this->attach($planId, (int) $exerciseId);
         }
     }
+    public function attachExercise(int $planId, int $exerciseId): bool
+    {
+        return $this->attach($planId, $exerciseId);
+    }
+
+    public function detachExercise(int $planId, int $exerciseId): bool
+    {
+        return $this->detach($planId, $exerciseId);
+    }
+
+    public function syncExercises(int $planId, array $exerciseIds): void
+    {
+        $this->sync($planId, $exerciseIds);
+    }
+
 }

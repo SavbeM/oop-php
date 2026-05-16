@@ -11,6 +11,4 @@ interface ModelInterface
     public function delete(int $id): bool;
 
     public function describe(): string;
-
-    public function countRelated(int $id): int;
 }
