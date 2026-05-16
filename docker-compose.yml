@@ -15,7 +15,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mojprojekt
+      MYSQL_DATABASE: fitness_tracker
     ports:
       - "3306:3306"
 
