@@ -1,0 +1,5 @@
+# Zapne zobrazovanie zoznamu súborov a priečinkov
+Options +Indexes +FollowSymLinks
+
+# Zabezpečí, že ak existuje index.php alebo index.html, tak sa spustia prednostne
+DirectoryIndex index.php index.html
