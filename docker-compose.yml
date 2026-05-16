@@ -18,6 +18,9 @@ services:
       MYSQL_DATABASE: fitness_tracker
     ports:
       - "3306:3306"
+    volumes:
+      - ./www/sql/databaza.sql:/docker-entrypoint-initdb.d/databaza.sql
+      - db_data:/var/lib/mysql
 
   # phpMyAdmin - Vizualizácia DB
   phpmyadmin:
@@ -31,3 +34,6 @@ services:
       - PMA_PASSWORD=root
     depends_on:
       - db
+
+volumes:
+  db_data:
