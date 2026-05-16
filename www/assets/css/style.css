@@ -1,4 +1,131 @@
-body { font-family: Arial, sans-serif; margin: 20px; }
-nav a { margin-right: 8px; }
-table { border-collapse: collapse; }
-th, td { padding: 6px 8px; }
+:root {
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-strong: #1d4ed8;
+    --danger: #dc2626;
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 28px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text);
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    transition: all 0.2s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+    color: var(--primary);
+    border-color: #bfdbfe;
+    transform: translateY(-1px);
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 0 0 24px;
+}
+
+h1, h2, h3 { margin-top: 0; }
+
+form, table, ul, p {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+form {
+    padding: 16px;
+    margin: 14px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+input, textarea, select, button {
+    font: inherit;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    padding: 9px 12px;
+    background: #fff;
+}
+
+input, textarea, select { min-height: 40px; }
+textarea { min-height: 90px; resize: vertical; }
+
+button {
+    background: var(--primary);
+    color: #fff;
+    border-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+button:hover, button:focus-visible { background: var(--primary-strong); }
+
+form[onsubmit*='Delete'] button,
+button[type='submit'].danger {
+    background: var(--danger);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+th { color: var(--muted); font-weight: 600; }
+
+ul {
+    margin: 12px 0;
+    padding: 14px 16px 14px 32px;
+}
+
+p { padding: 12px 14px; margin: 10px 0; }
+
+a { color: var(--primary); }
+
+label {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.table-row-hover tr:hover td { background: #f8fafc; }
+.reveal { opacity: 0; transform: translateY(8px); }
+.reveal-visible { opacity: 1; transform: translateY(0); transition: all 0.35s ease; }
