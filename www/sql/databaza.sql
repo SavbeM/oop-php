@@ -30,6 +30,7 @@ CREATE TABLE exercises (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   metric_id INT NOT NULL,
+  -- RESTRICT protects metric catalogue rows used by exercises.
   CONSTRAINT fk_exercises_metric FOREIGN KEY (metric_id) REFERENCES metrics(id) ON DELETE RESTRICT
 );
 
@@ -42,8 +43,11 @@ CREATE TABLE workout_plans (
   level_id INT NOT NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  -- SET NULL keeps historical plans even if a user account is removed.
   CONSTRAINT fk_wp_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+  -- RESTRICT protects goals while plans reference them.
   CONSTRAINT fk_wp_goal FOREIGN KEY (goal_id) REFERENCES plan_goals(id) ON DELETE RESTRICT,
+  -- RESTRICT protects levels while plans reference them.
   CONSTRAINT fk_wp_level FOREIGN KEY (level_id) REFERENCES plan_levels(id) ON DELETE RESTRICT
 );
 
@@ -51,7 +55,9 @@ CREATE TABLE workout_plan_exercises (
   workout_plan_id INT NOT NULL,
   exercise_id INT NOT NULL,
   PRIMARY KEY (workout_plan_id, exercise_id),
+  -- CASCADE removes M:N rows when a plan is deleted.
   CONSTRAINT fk_wpe_plan FOREIGN KEY (workout_plan_id) REFERENCES workout_plans(id) ON DELETE CASCADE,
+  -- RESTRICT protects exercises that are still linked from plans.
   CONSTRAINT fk_wpe_exercise FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE RESTRICT
 );
 
